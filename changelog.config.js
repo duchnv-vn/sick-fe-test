@@ -6,11 +6,12 @@ module.exports = {
   minMessageLength: 3,
   questions: ['type', 'scope', 'subject', 'body', 'breaking', 'issues', 'lerna'],
   scopes: [
-    'test',
-    'common',
-    'lib',
     'app',
     'api',
+    'lib',
+    'common',
+    'test',
+    'release',
   ],
   types: {
     chore: {
