@@ -1,0 +1,41 @@
+{
+  "name": "sick-fe-test",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "bash scripts/run-dev.sh",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,md,mdx,css,scss}\"",
+    "commit": "git-cz",
+    "deploy:preview": "bash scripts/vercel-preview-deploy.sh",
+    "deploy:prod": "bash scripts/vercel-prod-deploy.sh"
+  },
+  "dependencies": {
+    "@auth0/nextjs-auth0": "^3.5.0",
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "mobx": "^6.12.3",
+    "mobx-react-lite": "^4.0.7",
+    "moment-timezone": "^0.5.45",
+    "mongodb": "^6.5.0",
+    "next": "14.2.3",
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.3",
+    "git-cz": "^4.9.0",
+    "postcss": "^8",
+    "prettier": "^3.2.5",
+    "sass": "^1.76.0",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}

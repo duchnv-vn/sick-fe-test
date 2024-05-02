@@ -1,0 +1,9 @@
+.button-1 {
+  @apply flex items-center justify-center;
+  @apply bg-primary border-gray-400;
+  @apply border-2 border-solid rounded w-14 h-10 shadow-md;
+
+  &:hover {
+    @apply bg-secondary;
+  }
+}

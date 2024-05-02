@@ -1,0 +1,25 @@
+$text-default-color: '#1D2939';
+$button-primary-background: #0e4c93;
+$button-primary-hover-background: #0a386e;
+$button-primary-active-background: #072d59;
+$button-primary-focus-background: #0e4c93;
+$text-link-color: rgb(21 111 238 / 1);
+$input-border-color: rgb(208 213 221/ 1);
+$input-background: rgb(255 255 255/ 1);
+$input-hover-border-color: #98a1b2;
+$input-focus-border-color: #156fee;
+$input-error-border-color: #d92c20;
+
+.theme-light {
+  --color-primary: #ffffff;
+  --color-secondary: #dad8d8a6;
+  --color-secondary-1: #d1d5db;
+  --color-reverse-primary: #1e293b;
+}
+
+.theme-dark {
+  --color-primary: #1e293b;
+  --color-secondary: #161b22;
+  --color-secondary-1: #ffffff;
+  --color-reverse-primary: #ffffff;
+}

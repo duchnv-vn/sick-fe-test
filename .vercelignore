@@ -1,0 +1,12 @@
+/*
+
+!.vercelignore
+!public
+!src
+!vercel.json
+!package*.json
+!next.config.mjs
+!postcss.config.mjs
+!.eslintrc.json
+!tailwind.config.ts
+!tsconfig.json

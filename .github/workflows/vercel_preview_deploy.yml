@@ -1,0 +1,47 @@
+name: Vercel Preview Deploy
+
+env:
+  APP_ENV: production
+  MONGODB_URI: ${{ secrets.MONGODB_URI }}
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+on:
+  workflow_dispatch:
+    pull_request:
+    types:
+      - closed
+    branches:
+      - "master"
+
+jobs:
+  if_merged:
+    if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Install Next CLI
+        run: npm install --global next@latest
+
+      - name: Cache node modules
+        id: cache-node-modules
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Install dependencies
+        run: npm i
+
+      - name: Deploy preview to Vercel
+        run: npm run deploy:preview
