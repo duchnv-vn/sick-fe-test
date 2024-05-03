@@ -1,5 +1,5 @@
 .general-data-card {
-  @apply grid-cols-1 flex justify-between items-center p-4 bg-primary rounded-lg shadow-md;
+  @apply col-span-3 flex justify-between items-center p-4 bg-primary rounded-lg shadow-md;
 
   .content {
     @apply flex flex-col;

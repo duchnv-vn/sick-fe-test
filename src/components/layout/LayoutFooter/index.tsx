@@ -7,7 +7,7 @@ const { Footer } = Layout;
 const LayoutFooter: React.FC = () => {
   return (
     <Footer style={{ textAlign: 'center' }}>
-      Device Management platform ©{new Date().getFullYear()} Created by Duc
+      Device Management Platform ©{new Date().getFullYear()} Created by Duc
       Huynh
     </Footer>
   );

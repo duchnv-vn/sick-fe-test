@@ -5,10 +5,13 @@ import UserStore from './stores/User';
 import CommonStore from './stores/Common';
 import { ThemeModes } from '@/utils/enum/theme';
 import { useStore } from '.';
+import { dummnyDevices } from './dummyData';
+import DeviceStore from './stores/Device';
 
 type RootStoreProps = {
   UserStore: UserStore;
   CommonStore: CommonStore;
+  DeviceStore: DeviceStore;
 };
 
 export const StoreContext = createContext<RootStoreProps>({} as RootStoreProps);
@@ -18,12 +21,14 @@ export const StoreWrapper = ({ children }: { children: ReactNode }) => {
     mode: ThemeModes['theme-light'],
   });
   const UserStoreValues = useStore('UserStore', {});
+  const DeviceStoreValues = useStore('DeviceStore', { devices: dummnyDevices });
 
   return (
     <StoreContext.Provider
       value={{
         CommonStore: ComonStoreValues,
         UserStore: UserStoreValues,
+        DeviceStore: DeviceStoreValues,
       }}
     >
       {children}
