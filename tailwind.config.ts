@@ -16,6 +16,12 @@ const config: Config = {
       colors: { ...colors },
       borderColor: { ...colors },
     },
+    screens: {
+      phone: '280px',
+      tablet: '640px',
+      laptop: '1024px',
+      desktop: '1280px',
+    },
   },
   plugins: [],
 };

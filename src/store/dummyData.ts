@@ -4,3 +4,5 @@ export const dummyUser = {
   email: 'noritechhub@gmail.com',
   avatarUrl: 'https://i.pravatar.cc/300',
 };
+
+export const dummnyDevices = [{}];

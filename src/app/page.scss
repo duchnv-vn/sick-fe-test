@@ -1,0 +1,33 @@
+.homepage {
+  @apply flex flex-col gap-8;
+
+  .general-data-collection-cards {
+    @apply grid gap-4 grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4;
+
+    .general-data-card {
+      @apply h-20 tablet:h-32 laptop:h-24;
+
+      &.total-device {
+        .icon-wrapper {
+          @apply bg-blue-300;
+        }
+      }
+
+      &.online-device {
+        .icon-wrapper {
+          @apply bg-green-300;
+        }
+      }
+
+      &.offline-device {
+        .icon-wrapper {
+          @apply bg-red-300;
+        }
+      }
+    }
+  }
+
+  .device-table-container {
+    @apply bg-primary rounded;
+  }
+}

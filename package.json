@@ -13,10 +13,12 @@
     "deploy:prod": "bash scripts/vercel-prod-deploy.sh"
   },
   "dependencies": {
+    "@ant-design/nextjs-registry": "^1.0.0",
     "@auth0/nextjs-auth0": "^3.5.0",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "antd": "^5.17.0",
     "mobx": "^6.12.3",
     "mobx-react-lite": "^4.0.7",
     "moment-timezone": "^0.5.45",

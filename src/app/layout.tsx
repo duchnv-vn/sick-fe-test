@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { AntdRegistry } from '@ant-design/nextjs-registry';
 import Auth0ProviderWrapper from '@/components/auth/Auth0Provider';
 import { StoreWrapper } from '@/store/storeProvider';
 
@@ -21,7 +22,9 @@ export default function RootLayout({
     <html lang="en">
       <Auth0ProviderWrapper>
         <StoreWrapper>
-          <body className={inter.className}>{children}</body>
+          <AntdRegistry>
+            <body className={inter.className}>{children}</body>
+          </AntdRegistry>
         </StoreWrapper>
       </Auth0ProviderWrapper>
     </html>

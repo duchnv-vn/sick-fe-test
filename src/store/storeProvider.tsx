@@ -1,10 +1,10 @@
 'use client';
 import { ReactNode, createContext, useContext } from 'react';
+
 import UserStore from './stores/User';
 import CommonStore from './stores/Common';
 import { ThemeModes } from '@/utils/enum/theme';
 import { useStore } from '.';
-import { dummyUser } from './dummyData';
 
 type RootStoreProps = {
   UserStore: UserStore;
@@ -17,9 +17,7 @@ export const StoreWrapper = ({ children }: { children: ReactNode }) => {
   const ComonStoreValues = useStore('CommonStore', {
     mode: ThemeModes['theme-light'],
   });
-  const UserStoreValues = useStore('UserStore', {
-    user: dummyUser,
-  });
+  const UserStoreValues = useStore('UserStore', {});
 
   return (
     <StoreContext.Provider
