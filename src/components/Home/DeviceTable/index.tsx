@@ -7,29 +7,18 @@ import type { TableColumnsType } from 'antd';
 import Button from '@/components/elements/Button';
 import { useStores } from '@/store/storeProvider';
 import { DeviceStatus, DeviceTypes } from '@/utils/enum/device';
-import { Device } from '@/utils/type/device.type';
+import {
+  Device,
+  DeviceType,
+  TabHeader,
+  TableDataType,
+} from '@/utils/type/device.type';
 import LabelBox from '@/components/elements/LabelBox';
-
-type DeviceType = `${DeviceTypes}` | 'ALL';
-type TabHeader = {
-  key: string;
-  label: string;
-  children: JSX.Element;
-};
-interface TableDataType {
-  key: number;
-  name: string;
-  serialNumber: number;
-  type: DeviceTypes;
-  status: DeviceStatus;
-}
-
-const DEFAULT_DEVICE_STATUS = [0, 1];
-const DEFAULT_DEVICE_TYPE = 'ALL';
-const deviceStatusLabels = {
-  0: 'Offline devices',
-  1: 'Online devices',
-} as Record<number, string>;
+import {
+  DEFAULT_DEVICE_STATUS,
+  DEFAULT_DEVICE_TYPE,
+  deviceStatusLabels,
+} from '../../../utils/constant/device';
 
 const convertTableItems = ({
   _id,
