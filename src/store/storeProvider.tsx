@@ -4,6 +4,7 @@ import UserStore from './stores/User';
 import CommonStore from './stores/Common';
 import { ThemeModes } from '@/utils/enum/theme';
 import { useStore } from '.';
+import { dummyUser } from './dummyData';
 
 type RootStoreProps = {
   UserStore: UserStore;

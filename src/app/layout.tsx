@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import Auth0ProviderWrapper from '@/components/auth/Auth0Provider';
+import { StoreWrapper } from '@/store/storeProvider';
 
 import './globals.scss';
 
@@ -17,7 +19,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <Auth0ProviderWrapper>
+        <StoreWrapper>
+          <body className={inter.className}>{children}</body>
+        </StoreWrapper>
+      </Auth0ProviderWrapper>
     </html>
   );
 }

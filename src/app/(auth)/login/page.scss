@@ -1,0 +1,18 @@
+.login-page {
+  @apply min-h-screen flex items-center justify-center;
+
+  .login-card {
+    @apply flex flex-col items-center;
+    @apply gap-10;
+
+    .login-button {
+      @apply bg-blue-500 text-white;
+      @apply rounded;
+      @apply w-72 py-2 px-4;
+
+      &:hover {
+        @apply bg-blue-700;
+      }
+    }
+  }
+}
