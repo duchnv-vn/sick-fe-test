@@ -23,7 +23,8 @@ const MainLayout = ({ children }: BaseComponentProps) => {
   } = useStores();
 
   useEffect(() => {
-    user && setUser(user);
+    if (!user) return;
+    setUser(user);
   }, [user]);
 
   return (

@@ -6,6 +6,6 @@ export enum DeviceTypes {
 }
 
 export enum DeviceStatus {
-  OFFLINE,
-  ONLINE,
+  offline,
+  online,
 }

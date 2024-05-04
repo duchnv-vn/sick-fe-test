@@ -27,6 +27,8 @@ const AccountMenu: React.FC = () => {
     CommonStore: { setIsAppLoading },
   } = useStores();
 
+  if (!name) return <></>;
+
   return (
     <Dropdown menu={{ items }} placement="bottomRight">
       <Button

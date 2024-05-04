@@ -34,13 +34,25 @@
     @apply bg-primary rounded p-4;
 
     .action-buttons {
-      @apply ml-4 flex items-center gap-8;
+      @apply ml-4 flex flex-col gap-2 justify-end;
 
-      .refetch-button {
-        @apply flex items-center justify-center;
+      .buttons-container {
+        @apply ml-4 flex items-center gap-8;
 
-        .icon {
-          @apply w-5 h-5;
+        .refetch-button {
+          @apply flex items-center justify-center;
+
+          .icon {
+            @apply w-5 h-5;
+          }
+        }
+      }
+
+      .updated-time-container {
+        @apply flex justify-end;
+
+        .time {
+          @apply text-secondary;
         }
       }
     }
