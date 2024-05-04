@@ -1,0 +1,52 @@
+.homepage {
+  @apply flex flex-col gap-8;
+
+  .general-data-collection-cards {
+    @apply grid gap-4 grid-cols-3 tablet:grid-cols-6 laptop:grid-cols-9 desktop:grid-cols-12;
+
+    .general-data-card {
+      @apply h-20 tablet:h-32 laptop:h-24;
+      &.total-device {
+        .icon-wrapper {
+          @apply bg-blue-300;
+        }
+      }
+
+      &.online-device {
+        .icon-wrapper {
+          @apply bg-green-300;
+        }
+      }
+
+      &.offline-device {
+        .icon-wrapper {
+          @apply bg-red-300;
+        }
+      }
+    }
+
+    .device-by-category {
+      @apply h-44 tablet:h-52 laptop:h-64;
+    }
+  }
+
+  .device-table-container {
+    @apply bg-primary rounded p-4;
+
+    .action-buttons {
+      @apply ml-4 flex items-center gap-8;
+
+      .refetch-button {
+        @apply flex items-center justify-center;
+
+        .icon {
+          @apply w-5 h-5;
+        }
+      }
+    }
+
+    .device-type-label-box {
+      @apply p-0;
+    }
+  }
+}

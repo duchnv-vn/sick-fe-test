@@ -1,13 +1,15 @@
 import { enableStaticRendering } from 'mobx-react-lite';
 import CommonStore from './stores/Common';
 import UserStore from './stores/User';
-import { CommonStoreData, UserStoreData } from './type';
+import { CommonStoreData, DeviceStoreData, UserStoreData } from './type';
+import DeviceStore from './stores/Device';
 
-type InitData = CommonStoreData | UserStoreData;
-type StoreType = UserStore | CommonStore;
+type InitData = CommonStoreData | UserStoreData | DeviceStoreData;
+type StoreType = UserStore | CommonStore | DeviceStore;
 const Stores = {
   UserStore,
   CommonStore,
+  DeviceStore,
 };
 type StoresType = typeof Stores;
 

@@ -1,0 +1,23 @@
+.general-data-card {
+  @apply col-span-3 flex justify-between items-center p-4 bg-primary rounded-lg shadow-md;
+
+  .content {
+    @apply flex flex-col;
+
+    .title {
+      @apply text-xs tablet:text-base laptop:text-lg font-bold text-secondary;
+    }
+
+    .number {
+      @apply font-bold text-lg tablet:text-xl laptop:text-2xl;
+    }
+  }
+
+  .icon-wrapper {
+    @apply hidden tablet:flex h-[60%] laptop:h-[90%] items-center justify-center text-white p-3 rounded-2xl aspect-square;
+
+    .icon {
+      @apply w-[60%] laptop:w-[90%] h-[60%] laptop:h-[90%];
+    }
+  }
+}

@@ -9,6 +9,8 @@ const nextConfig = {
         AUTH0_AUDIENCE: process.env.AUTH0_AUDIENCE,
         AUTH0_BASE_URL: process.env.AUTH0_BASE_URL,
         AUTH0_ISSUER_BASE_URL: process.env.AUTH0_ISSUER_BASE_URL,
+    }, images: {
+        domains: ['i.pravatar.cc', 's.gravatar.com']
     }
 };
 

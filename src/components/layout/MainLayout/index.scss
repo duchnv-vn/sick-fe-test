@@ -1,0 +1,42 @@
+.main-layout {
+  .silder {
+    .ant-menu-title-content {
+      @apply text-primary;
+    }
+
+    .logo {
+      @apply w-full px-4 pt-4 pb-2;
+    }
+  }
+
+  .layout-header {
+    @apply flex justify-between items-center p-4;
+
+    .left-section {
+      @apply w-1/2 flex items-center;
+    }
+    .right-section {
+      @apply w-1/2 flex items-center justify-end;
+
+      .account-button {
+        @apply h-auto border-none;
+
+        .button-inner {
+          @apply flex items-center gap-2;
+
+          .user-avatar {
+            @apply rounded-full;
+          }
+
+          .user-name {
+            @apply font-bold;
+          }
+        }
+      }
+    }
+  }
+
+  .content-container {
+    @apply mx-8 my-12;
+  }
+}

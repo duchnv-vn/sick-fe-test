@@ -1,15 +1,15 @@
 import { makeAutoObservable } from 'mobx';
+import { UserProfile } from '@auth0/nextjs-auth0/client';
 import { UserStoreData } from '../type';
-import { User } from '@/utils/type/user.type';
 
 class UserStore {
-  user: User = {} as User;
+  user: UserProfile = {} as UserProfile;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  setUser = (user: User) => {
+  setUser = (user: UserProfile) => {
     this.user = user;
   };
 

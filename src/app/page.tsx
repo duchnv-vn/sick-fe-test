@@ -1,8 +1,17 @@
+import MainLayout from '@/components/layout/MainLayout';
+import GeneralDataCollectionCards from '@/components/Home/GeneralDataCollectionCards';
+import DeviceTableContainer from '@/components/Home/DeviceTable';
+
+import './page.scss';
+
 const Home = () => {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      Homepage
-    </main>
+    <MainLayout>
+      <main className="homepage">
+        <GeneralDataCollectionCards />
+        <DeviceTableContainer />
+      </main>
+    </MainLayout>
   );
 };
 

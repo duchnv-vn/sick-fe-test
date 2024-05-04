@@ -1,7 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { BaseComponentProps } from '@/utils/type/component.type';
 
-type ButtonProps = {
+type ButtonProps = BaseComponentProps & {
   label?: string;
   icon?: IconDefinition;
   iconPosition?: 'left' | 'right';
@@ -26,6 +27,7 @@ const Button = (props: ButtonProps) => {
     iconPosition = 'right',
     labelClassName,
     onClick,
+    children,
   } = props;
 
   const Icon =
@@ -37,11 +39,19 @@ const Button = (props: ButtonProps) => {
 
   return (
     <button {...{ className, onClick }}>
-      {iconPosition == 'left' && Icon}
-      {label && (
-        <span {...{ className: `label ${labelClassName ?? ''}` }}>{label}</span>
+      {children ? (
+        children
+      ) : (
+        <>
+          {iconPosition == 'left' && Icon}
+          {label && (
+            <span {...{ className: `label ${labelClassName ?? ''}` }}>
+              {label}
+            </span>
+          )}
+          {iconPosition == 'right' && Icon}
+        </>
       )}
-      {iconPosition == 'right' && Icon}
     </button>
   );
 };
