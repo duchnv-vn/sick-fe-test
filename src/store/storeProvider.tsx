@@ -17,7 +17,7 @@ export const StoreContext = createContext<RootStoreProps>({} as RootStoreProps);
 
 export const StoreWrapper = ({ children }: { children: ReactNode }) => {
   const ComonStoreValues = useStore('CommonStore', {
-    mode: ThemeModes['theme-light'],
+    mode: ThemeModes['light'],
   });
   const UserStoreValues = useStore('UserStore', {});
   const DeviceStoreValues = useStore('DeviceStore', {});

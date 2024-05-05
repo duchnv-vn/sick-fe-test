@@ -31,13 +31,21 @@ class DeviceStore {
 
   setDevices = (devices: Record<string, Device[]>) => {
     const { online, offline } = devices;
-    this.onlineDevices = online;
-    this.totalOnlineDeviceNumber = online.length;
+    let totalDevices = 0;
 
-    this.offlineDevices = offline;
-    this.totalOfflineDeviceNumber = offline.length;
+    if (online) {
+      this.onlineDevices = online;
+      this.totalOnlineDeviceNumber = online.length;
+      totalDevices += online.length;
+    }
 
-    this.totalDeviceNumber = online.length + offline.length;
+    if (offline) {
+      this.offlineDevices = offline;
+      this.totalOfflineDeviceNumber = offline.length;
+      totalDevices += offline.length;
+    }
+
+    this.totalDeviceNumber = totalDevices;
   };
 
   setDeviceNumberByTypes = (devices: Device[]) => {

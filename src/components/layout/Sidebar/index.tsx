@@ -64,7 +64,7 @@ const Sidebar: React.FC = () => {
         }}
       />
       <Menu
-        theme={themeMode === ThemeModes['theme-dark'] ? 'light' : 'dark'}
+        theme={themeMode === ThemeModes['dark'] ? 'light' : 'dark'}
         defaultSelectedKeys={[DEFAULT_SELECTED_KEY]}
         defaultOpenKeys={[DEFAULT_OPENED_KEY]}
         mode="inline"

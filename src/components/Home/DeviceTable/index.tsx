@@ -22,8 +22,10 @@ import {
 import { getNow } from '@/utils/helpers/date';
 import { DATETIME_FORMAT } from '@/utils/constant';
 import serverService from '@/lib/server';
+import { useQuery } from '@tanstack/react-query';
 
-const UPDATE_PERIOD_TIME = 5 * 1000;
+const UPDATE_PERIOD_TIME = 15 * 1000;
+const REFETCH_DELAY_TIME = 1.5 * 1000;
 
 const convertTableItems = ({
   _id,
@@ -43,7 +45,15 @@ const DeviceTableContainer = () => {
     },
   } = useStores();
 
-  const [isRefetchData, setIsRefetchData] = useState(false);
+  const [isAutoRefetch, setIsAutoRefetch] = useState(true);
+  const [isManualRefetching, setIsManualRefetching] = useState(false);
+
+  const { data, isLoading, refetch, isRefetching } = useQuery({
+    queryKey: ['devices'],
+    queryFn: serverService.getDevices,
+    refetchInterval: !isManualRefetching && isAutoRefetch && UPDATE_PERIOD_TIME,
+  });
+
   const [deviceStatuses, setDeviceStatuses] = useState<DeviceStatus[]>(
     DEFAULT_DEVICE_STATUS,
   );
@@ -53,15 +63,15 @@ const DeviceTableContainer = () => {
   const [activeId, setActiveId] = useState<number | null>(null);
   const [updatedTime, setUpdatedTime] = useState('');
 
-  const fetchDevices = async () => {
-    if (isRefetchData) return;
-    setIsRefetchData(true);
-    setUpdatedTime(getNow(DATETIME_FORMAT.hhmmss));
-    const { devices, isSuccess } = await serverService.getDevices();
-    setIsRefetchData(false);
-    if (!isSuccess) return;
-    storeSetDevices(devices);
-  };
+  useEffect(() => {
+    !isRefetching && setUpdatedTime(getNow(DATETIME_FORMAT.hhmmss));
+  }, [isRefetching]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      isManualRefetching && setIsManualRefetching(false);
+    }, REFETCH_DELAY_TIME);
+  }, [isManualRefetching]);
 
   useEffect(() => {
     const filtedDevices = getDevicesByTypes(selectDeviceType, deviceStatuses);
@@ -69,8 +79,11 @@ const DeviceTableContainer = () => {
   }, [deviceStatuses, selectDeviceType]);
 
   useEffect(() => {
-    fetchDevices();
-  }, []);
+    if (data) {
+      const { devices, isSuccess } = data;
+      isSuccess && storeSetDevices(devices);
+    }
+  }, [data]);
 
   useEffect(() => {
     setDevices(
@@ -85,12 +98,36 @@ const DeviceTableContainer = () => {
       <Button
         {...{
           icon: faRotateRight,
-          className: `refetch-button ${isRefetchData ? 'rotate-360' : ''}`,
+          className: `refetch-button ${isManualRefetching ? 'rotate-360' : ''}`,
           onClick: () => {
-            fetchDevices();
+            refetch();
+            setIsManualRefetching(true);
           },
         }}
       />
+    );
+  };
+
+  const AutoRefetchCheckBox = () => {
+    return (
+      <div className="auto-refetch-checkbox-container">
+        <Checkbox
+          id="auto-refetch-checkbox"
+          defaultChecked={true}
+          onChange={(value) => setIsAutoRefetch(value.target.checked)}
+        />
+        <label htmlFor="auto-refetch-checkbox">Auto refetch data</label>
+      </div>
+    );
+  };
+
+  const UpdateTime = () => {
+    return (
+      <div className="updated-time-container">
+        <span className="time">
+          <b>Updated at:</b> {updatedTime}
+        </span>
+      </div>
     );
   };
 
@@ -109,20 +146,21 @@ const DeviceTableContainer = () => {
               onChange={(values) => setDeviceStatuses(values)}
             />
           </div>
+          <AutoRefetchCheckBox />
           <RefetchDataButton />
         </div>
-        <div className="updated-time-container">
-          <span className="time">
-            <b>Updated at:</b> {updatedTime}
-          </span>
-        </div>
+        <UpdateTime />
       </div>
     );
   };
 
   const DeviceTable = () => {
     return (
-      <Table columns={columns} dataSource={devices} loading={isRefetchData} />
+      <Table
+        columns={columns}
+        dataSource={devices}
+        loading={isLoading || isManualRefetching}
+      />
     );
   };
 
