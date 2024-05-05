@@ -6,7 +6,7 @@ import { Dropdown, Button } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { useStores } from '@/store/storeProvider';
-import Image from '@/components/elements/Image';
+import Image from '@/components/Elements/Image';
 
 const items: MenuProps['items'] = [
   {

@@ -17,6 +17,12 @@ class UserStore {
   hydrate = ({ user }: UserStoreData) => {
     user && this.setUser(user);
   };
+
+  getUserId = () => {
+    if (!this.user?.sub) return null;
+    const splittedSub = this.user.sub.split('|');
+    return Number(splittedSub[1]);
+  };
 }
 
 export default UserStore;

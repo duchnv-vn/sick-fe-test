@@ -3,17 +3,19 @@ import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Layout } from 'antd';
+import { Layout, ConfigProvider } from 'antd';
 import { BaseComponentProps } from '@/utils/type/component.type';
-import Sidebar from '../Sidebar';
-import LayoutHeader from '../LayoutHeader';
-import LayoutFooter from '../LayoutFooter';
 import { useStores } from '@/store/storeProvider';
 import TopProgressBar from '@/components/TopProgressBar';
+import LayoutFooter from '../LayoutFooter';
+import LayoutHeader from '../LayoutHeader';
+import Sidebar from '../Sidebar';
+import DeviceModal from '@/components/Modal/DeviceModal';
 
 import './index.scss';
 
 const { Content } = Layout;
+
 const queryClient = new QueryClient();
 
 const MainLayout = ({ children }: BaseComponentProps) => {
@@ -31,18 +33,21 @@ const MainLayout = ({ children }: BaseComponentProps) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Layout
-        style={{ minHeight: '100vh' }}
-        className={`main-layout theme-${themeMode}`}
-      >
-        <Sidebar />
-        <Layout>
-          <LayoutHeader />
-          <TopProgressBar />
-          <Content className="content-container">{children}</Content>
-          <LayoutFooter />
+      <ConfigProvider>
+        <Layout
+          style={{ minHeight: '100vh' }}
+          className={`main-layout theme-${themeMode}`}
+        >
+          <Sidebar />
+          <Layout>
+            <LayoutHeader />
+            <TopProgressBar />
+            <Content className="content-container">{children}</Content>
+            <LayoutFooter />
+            <DeviceModal />
+          </Layout>
         </Layout>
-      </Layout>
+      </ConfigProvider>
     </QueryClientProvider>
   );
 };

@@ -6,7 +6,7 @@ import type { MenuProps } from 'antd';
 import { Layout, Menu } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComputer } from '@fortawesome/free-solid-svg-icons';
-import Image from '@/components/elements/Image';
+import Image from '@/components/Elements/Image';
 import whiteLogo from '../../../assets/image/white_logo.svg';
 import { useStores } from '@/store/storeProvider';
 import { ThemeModes } from '@/utils/enum/theme';

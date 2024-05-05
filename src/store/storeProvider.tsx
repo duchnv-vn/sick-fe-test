@@ -1,6 +1,6 @@
 'use client';
 import { ReactNode, createContext, useContext } from 'react';
-
+import { message } from 'antd';
 import UserStore from './stores/User';
 import CommonStore from './stores/Common';
 import { ThemeModes } from '@/utils/enum/theme';
@@ -16,8 +16,11 @@ type RootStoreProps = {
 export const StoreContext = createContext<RootStoreProps>({} as RootStoreProps);
 
 export const StoreWrapper = ({ children }: { children: ReactNode }) => {
+  const [messageApi, contextHolder] = message.useMessage();
+
   const ComonStoreValues = useStore('CommonStore', {
     mode: ThemeModes['light'],
+    messageApiInstance: messageApi,
   });
   const UserStoreValues = useStore('UserStore', {});
   const DeviceStoreValues = useStore('DeviceStore', {});
@@ -30,6 +33,7 @@ export const StoreWrapper = ({ children }: { children: ReactNode }) => {
         DeviceStore: DeviceStoreValues,
       }}
     >
+      {contextHolder}
       {children}
     </StoreContext.Provider>
   );

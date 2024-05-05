@@ -1,6 +1,8 @@
 #!bin/bash
 
-source .env.dev
+if [ -e .env.dev ]; then
+    source .env.dev
+fi
 
 vercel . \
     -e MONGODB_URI=$MONGODB_URI \

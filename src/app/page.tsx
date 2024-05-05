@@ -1,4 +1,4 @@
-import MainLayout from '@/components/layout/MainLayout';
+import MainLayout from '@/components/Layout/MainLayout';
 import GeneralDataCollectionCards from '@/components/Home/GeneralDataCollectionCards';
 import DeviceTableContainer from '@/components/Home/DeviceTable';
 

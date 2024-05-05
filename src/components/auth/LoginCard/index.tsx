@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import Button from '@/components/elements/Button';
-import Image from '@/components/elements/Image';
+import Button from '@/components/Elements/Button';
+import Image from '@/components/Elements/Image';
 import logo from '../../../assets/image/logo.png';
 
 const LoginCard: React.FC = () => {
