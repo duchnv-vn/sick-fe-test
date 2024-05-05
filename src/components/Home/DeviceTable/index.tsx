@@ -5,8 +5,9 @@ import {
   faEdit,
   faPlus,
   faRotateRight,
+  faTrash,
 } from '@fortawesome/free-solid-svg-icons';
-import { Tabs, Checkbox, Table } from 'antd';
+import { Tabs, Checkbox, Table, Popconfirm } from 'antd';
 import type { TableColumnsType } from 'antd';
 import Button from '@/components/Elements/Button';
 import { useStores } from '@/store/storeProvider';
@@ -32,6 +33,7 @@ import { DATETIME_FORMAT } from '@/utils/constant';
 import serverService from '@/lib/server';
 import { useQuery } from '@tanstack/react-query';
 import { DeviceResponseMsg } from '@/utils/enum/message';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const UPDATE_PERIOD_TIME = 15 * 1000;
 const REFETCH_DELAY_TIME = 1.5 * 1000;
@@ -52,6 +54,7 @@ const DeviceTableContainer: React.FC = () => {
       onlineDevices,
       offlineDevices,
       setDeviceToEdit,
+      removeDevice,
     },
     CommonStore: { displayMessage, setIsDeviceModalOpen },
   } = useStores();
@@ -72,6 +75,26 @@ const DeviceTableContainer: React.FC = () => {
     useState<DeviceType>(DEFAULT_DEVICE_TYPE);
   const [devices, setDevices] = useState<TableDataType[]>([]);
   const [updatedTime, setUpdatedTime] = useState('');
+
+  const deleteDevice = async (device: TableDataType) => {
+    const { key, name, type, status } = device;
+    const { isSuccess } = await serverService.deleteDevice(key);
+
+    if (!isSuccess) {
+      displayMessage({
+        type: 'error',
+        content: DeviceResponseMsg.DELETE_FAIL.replace('{name}', name),
+      });
+      return;
+    }
+
+    removeDevice(key, status, type);
+
+    displayMessage({
+      type: 'success',
+      content: DeviceResponseMsg.DELETE_SUCCESS.replace('{name}', name),
+    });
+  };
 
   useEffect(() => {
     !isRefetching && setUpdatedTime(getNow(DATETIME_FORMAT.hhmmss));
@@ -235,17 +258,30 @@ const DeviceTableContainer: React.FC = () => {
     },
     {
       width: '10%',
-      render: (_: any, { key }: TableDataType) => (
-        <Button
-          {...{
-            icon: faEdit,
-            onClick: () => {
-              setDeviceToEdit(key);
-              setIsDeviceModalOpen(true, false);
-            },
-            className: 'edit-button',
-          }}
-        />
+      render: (_: any, device: TableDataType) => (
+        <div className="device-row-action-buttons">
+          <Button
+            {...{
+              icon: faEdit,
+              onClick: () => {
+                setDeviceToEdit(device.key);
+                setIsDeviceModalOpen(true, false);
+              },
+              className: 'edit-button',
+            }}
+          />
+          <Popconfirm
+            placement="bottomRight"
+            title={'Delete confirm box'}
+            description={`Are you sure to delete device ${device.name}`}
+            okText="Yes"
+            cancelText="No"
+            onConfirm={() => deleteDevice(device)}
+            className="delete-button"
+          >
+            <FontAwesomeIcon icon={faTrash} className="icon" />
+          </Popconfirm>
+        </div>
       ),
     },
   ];

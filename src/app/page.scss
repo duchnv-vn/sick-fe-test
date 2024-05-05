@@ -80,5 +80,13 @@
     .device-type-label-box {
       @apply p-0;
     }
+
+    .device-row-action-buttons {
+      @apply flex gap-10 items-center cursor-pointer;
+
+      .icon {
+        @apply w-5 h-5;
+      }
+    }
   }
 }

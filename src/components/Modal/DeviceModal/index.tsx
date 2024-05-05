@@ -9,8 +9,6 @@ import { CreateDeviceBody, Device } from '@/utils/type/device.type';
 import serverService from '@/lib/server';
 import { DeviceResponseMsg } from '@/utils/enum/message';
 
-import './index.scss';
-
 const { Item } = Form;
 const { TextArea } = Input;
 const { Option } = Select;

@@ -88,7 +88,7 @@ class DeviceStore {
       this.totalOfflineDeviceNumber += 1;
     }
 
-    this.totalDeviceNumber = this.totalDeviceNumber + 1;
+    this.totalDeviceNumber += 1;
     const newNumberByType = this.deviceNumberByTypes[device.type] + 1;
     this.deviceNumberByTypes[device.type] = newNumberByType;
   };
@@ -140,6 +140,22 @@ class DeviceStore {
     this.deviceToEdit = [...this.onlineDevices, ...this.offlineDevices].find(
       (device) => device._id === id,
     );
+  };
+
+  removeDevice = (id: number, status: DeviceStatus, type: DeviceTypes) => {
+    const isOnlineDevice = status == DeviceStatus['online'];
+
+    if (isOnlineDevice) {
+      this.onlineDevices = this.onlineDevices.filter(({ _id }) => _id !== id);
+      this.totalOnlineDeviceNumber -= 1;
+    } else {
+      this.offlineDevices = this.offlineDevices.filter(({ _id }) => _id !== id);
+      this.totalOfflineDeviceNumber -= 1;
+    }
+
+    this.totalDeviceNumber -= 1;
+    const newNumberByType = this.deviceNumberByTypes[type] - 1;
+    this.deviceNumberByTypes[type] = newNumberByType;
   };
 
   hydrate = ({ devices }: DeviceStoreData) => {

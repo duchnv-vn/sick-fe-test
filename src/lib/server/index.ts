@@ -58,7 +58,7 @@ class Singleton {
       } = await this.client.post<BaseResponse<Device>>('/devices', payload);
 
       return { isSuccess: true, device: data };
-    } catch (error) {
+    } catch {
       return { isSuccess: false };
     }
   };
@@ -73,7 +73,18 @@ class Singleton {
       );
 
       return { isSuccess: true, device: data };
-    } catch (error) {
+    } catch {
+      return { isSuccess: false };
+    }
+  };
+
+  deleteDevice = async (deviceId: number) => {
+    try {
+      const isSuccess = await this.client.delete<BaseResponse<boolean>>(
+        `/devices/${deviceId}`,
+      );
+      return { isSuccess };
+    } catch {
       return { isSuccess: false };
     }
   };
