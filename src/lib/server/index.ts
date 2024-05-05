@@ -1,4 +1,3 @@
-import { getSession } from '@auth0/nextjs-auth0';
 import HttpService from '../http';
 import { Device, FetchDevicesResponse } from '@/utils/type/device.type';
 import { DeviceStatus } from '@/utils/enum/device';
@@ -27,9 +26,17 @@ class Singleton {
     return this._instance;
   }
 
-  async getAuthorization() {
-    const session = await getSession();
-    return `Bearer ${session?.accessToken}`;
+  static divideDevicesByStatus(devices: Device[]) {
+    const result = {
+      online: [],
+      offline: [],
+    } as unknown as Record<string, Device[]>;
+
+    devices.forEach((device) => {
+      result[DeviceStatus[device.status]].push(device);
+    });
+
+    return result;
   }
 
   async getDevices(): Promise<FetchDevicesResponse> {
@@ -45,43 +52,8 @@ class Singleton {
         isSuccess: true,
       };
     } catch (error) {
-      console.log('------------------------');
-      console.log('error', error);
-      console.log('------------------------');
       return { devices: {}, isSuccess: false };
     }
-  }
-
-  async getDevicesServerSide(): Promise<FetchDevicesResponse> {
-    try {
-      const accessToken = await this.getAuthorization();
-      const res = await fetch(`${process.env.AUTH0_AUDIENCE}api/devices`, {
-        next: { revalidate: 10 },
-        headers: { authorization: accessToken },
-      });
-      const devices = (await res.json()) as BaseResponse<Device[]>;
-      const filteredDevices = Singleton.divideDevicesByStatus(devices.data);
-
-      return {
-        devices: filteredDevices,
-        isSuccess: true,
-      };
-    } catch (error) {
-      return { devices: {}, isSuccess: false };
-    }
-  }
-
-  static divideDevicesByStatus(devices: Device[]) {
-    const result = {
-      online: [],
-      offline: [],
-    } as unknown as Record<string, Device[]>;
-
-    devices.forEach((device) => {
-      result[DeviceStatus[device.status]].push(device);
-    });
-
-    return result;
   }
 }
 
