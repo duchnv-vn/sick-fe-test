@@ -113,7 +113,7 @@ const DeviceTableContainer = () => {
       <div className="auto-refetch-checkbox-container">
         <Checkbox
           id="auto-refetch-checkbox"
-          defaultChecked={true}
+          checked={isAutoRefetch}
           onChange={(value) => setIsAutoRefetch(value.target.checked)}
         />
         <label htmlFor="auto-refetch-checkbox">Auto refetch data</label>
