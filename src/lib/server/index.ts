@@ -1,5 +1,11 @@
 import HttpService from '../http';
-import { Device, FetchDevicesResponse } from '@/utils/type/device.type';
+import {
+  UpdateDeviceResponse,
+  CreateDeviceBody,
+  Device,
+  FetchDevicesResponse,
+  EditDeviceBody,
+} from '@/utils/type/device.type';
 import { DeviceStatus } from '@/utils/enum/device';
 
 type BaseResponse<T> = {
@@ -12,12 +18,15 @@ const MAX_TIMEOUT = 1 * 60 * 1000;
 
 class Singleton {
   private static _instance: Singleton;
-  private static client = new HttpService({
-    baseURL: `${process.env.APP_DOMAIN}/api`,
-    timeout: MAX_TIMEOUT,
-  });
+  private client: HttpService;
 
-  private constructor() {}
+  private constructor() {
+    this.client = new HttpService({
+      baseURL: `${process.env.APP_DOMAIN}/api`,
+      timeout: MAX_TIMEOUT,
+    });
+  }
+
   public static get instance() {
     if (!this._instance) {
       this._instance = new Singleton();
@@ -26,7 +35,50 @@ class Singleton {
     return this._instance;
   }
 
-  static divideDevicesByStatus(devices: Device[]) {
+  getDevices = async (): Promise<FetchDevicesResponse> => {
+    try {
+      const devices = await this.client.get<BaseResponse<Device[]>>('/devices');
+      const filteredDevices = this.divideDevicesByStatus(devices.data.data);
+
+      return {
+        devices: filteredDevices,
+        isSuccess: true,
+      };
+    } catch (error) {
+      return { devices: {}, isSuccess: false };
+    }
+  };
+
+  createDevice = async (
+    payload: CreateDeviceBody,
+  ): Promise<UpdateDeviceResponse> => {
+    try {
+      const {
+        data: { data },
+      } = await this.client.post<BaseResponse<Device>>('/devices', payload);
+
+      return { isSuccess: true, device: data };
+    } catch (error) {
+      return { isSuccess: false };
+    }
+  };
+
+  editDevice = async (payload: EditDeviceBody, deviceId: number) => {
+    try {
+      const {
+        data: { data },
+      } = await this.client.put<BaseResponse<Device>>(
+        `/devices/${deviceId}`,
+        payload,
+      );
+
+      return { isSuccess: true, device: data };
+    } catch (error) {
+      return { isSuccess: false };
+    }
+  };
+
+  private divideDevicesByStatus(devices: Device[]) {
     const result = {
       online: [],
       offline: [],
@@ -37,23 +89,6 @@ class Singleton {
     });
 
     return result;
-  }
-
-  async getDevices(): Promise<FetchDevicesResponse> {
-    try {
-      const devices =
-        await Singleton.client.get<BaseResponse<Device[]>>('/devices');
-      const filteredDevices = Singleton.divideDevicesByStatus(
-        devices.data.data,
-      );
-
-      return {
-        devices: filteredDevices,
-        isSuccess: true,
-      };
-    } catch (error) {
-      return { devices: {}, isSuccess: false };
-    }
   }
 }
 

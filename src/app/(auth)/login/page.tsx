@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { getSession } from '@auth0/nextjs-auth0';
-import LoginCard from '@/components/auth/LoginCard';
+import LoginCard from '@/components/Auth/LoginCard';
 
 import './page.scss';
 

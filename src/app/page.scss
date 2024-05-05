@@ -34,7 +34,7 @@
     @apply bg-primary rounded p-4;
 
     .action-buttons {
-      @apply ml-4 flex flex-col gap-2 justify-end;
+      @apply ml-4 mb-2 flex flex-col gap-4 justify-end;
 
       .buttons-container {
         @apply ml-4 flex items-center gap-8;
@@ -57,6 +57,22 @@
 
         .time {
           @apply text-secondary;
+        }
+      }
+
+      .new-device-create-button {
+        @apply flex items-center gap-2 justify-end whitespace-nowrap w-fit px-2 py-1 ml-auto bg-green-500 text-white border-none;
+
+        &:hover {
+          @apply bg-green-700;
+        }
+
+        .icon {
+          @apply w-5 h-5;
+        }
+
+        span {
+          @apply text-white;
         }
       }
     }

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { AntdRegistry } from '@ant-design/nextjs-registry';
-import Auth0ProviderWrapper from '@/components/auth/Auth0Provider';
+import Auth0ProviderWrapper from '@/components/Auth/Auth0Provider';
 import { StoreWrapper } from '@/store/storeProvider';
 
 import './globals.scss';

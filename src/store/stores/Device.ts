@@ -10,6 +10,7 @@ class DeviceStore {
   deviceNumberByTypes: DeviceNumberByTypes = {} as DeviceNumberByTypes;
   onlineDevices: Device[] = [];
   offlineDevices: Device[] = [];
+  deviceToEdit: Device | null | undefined = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -67,8 +68,8 @@ class DeviceStore {
   ) => {
     let devices: Device[] = [];
 
-    status.includes(0) && devices.push(...this.offlineDevices);
     status.includes(1) && devices.push(...this.onlineDevices);
+    status.includes(0) && devices.push(...this.offlineDevices);
 
     if (deviceType === 'ALL') return devices;
 
@@ -76,12 +77,77 @@ class DeviceStore {
     return devices;
   };
 
+  addDevice = (device: Device) => {
+    const isOnlineDevice = device.status == DeviceStatus['online'];
+
+    if (isOnlineDevice) {
+      this.onlineDevices = [device, ...this.onlineDevices];
+      this.totalOnlineDeviceNumber += 1;
+    } else {
+      this.offlineDevices = [device, ...this.offlineDevices];
+      this.totalOfflineDeviceNumber += 1;
+    }
+
+    this.totalDeviceNumber = this.totalDeviceNumber + 1;
+    const newNumberByType = this.deviceNumberByTypes[device.type] + 1;
+    this.deviceNumberByTypes[device.type] = newNumberByType;
+  };
+
+  updateDevice = (device: Device) => {
+    const isOnlineDevice = device.status == DeviceStatus['online'];
+
+    const onlineIndex = this.onlineDevices.findIndex(
+      (item) => item._id === device._id,
+    );
+    const offlineIndex = this.offlineDevices.findIndex(
+      (item) => item._id === device._id,
+    );
+
+    if (isOnlineDevice) {
+      if (offlineIndex !== -1) {
+        this.offlineDevices.splice(offlineIndex, 1);
+        this.totalOfflineDeviceNumber -= 1;
+      }
+
+      if (onlineIndex !== -1) {
+        const newData = [...this.onlineDevices];
+        newData[onlineIndex] = device;
+        this.onlineDevices = newData;
+      } else {
+        this.onlineDevices = [device, ...this.onlineDevices];
+        this.totalOnlineDeviceNumber += 1;
+      }
+    } else {
+      if (onlineIndex !== -1) {
+        this.onlineDevices.splice(onlineIndex, 1);
+        this.totalOnlineDeviceNumber -= 1;
+      }
+
+      if (offlineIndex !== -1) {
+        const newData = [...this.offlineDevices];
+        newData[offlineIndex] = device;
+        this.offlineDevices = newData;
+      } else {
+        this.offlineDevices = [device, ...this.offlineDevices];
+        this.totalOfflineDeviceNumber += 1;
+      }
+    }
+  };
+
+  setDeviceToEdit = (id: number | null = null) => {
+    if (isNaN(Number(id))) return (this.deviceToEdit = null);
+
+    this.deviceToEdit = [...this.onlineDevices, ...this.offlineDevices].find(
+      (device) => device._id === id,
+    );
+  };
+
   hydrate = ({ devices }: DeviceStoreData) => {
     if (!devices) return;
     const { offline, online } = devices;
-    this.setDevicesByStatus(offline, DeviceStatus['offline']);
-    this.setDevicesByStatus(online, DeviceStatus['online']);
-    this.setDeviceNumberByTypes([...offline, ...online]);
+    offline && this.setDevicesByStatus(offline, DeviceStatus['offline']);
+    online && this.setDevicesByStatus(online, DeviceStatus['online']);
+    offline && online && this.setDeviceNumberByTypes([...offline, ...online]);
   };
 }
 

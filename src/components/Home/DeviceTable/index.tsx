@@ -1,19 +1,27 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { faEdit, faRotateRight } from '@fortawesome/free-solid-svg-icons';
+import {
+  faEdit,
+  faPlus,
+  faRotateRight,
+} from '@fortawesome/free-solid-svg-icons';
 import { Tabs, Checkbox, Table } from 'antd';
 import type { TableColumnsType } from 'antd';
-import Button from '@/components/elements/Button';
+import Button from '@/components/Elements/Button';
 import { useStores } from '@/store/storeProvider';
-import { DeviceStatus, DeviceTypes } from '@/utils/enum/device';
+import {
+  DeviceStatus,
+  DeviceTypeLabels,
+  DeviceTypes,
+} from '@/utils/enum/device';
 import {
   Device,
   DeviceType,
   TabHeader,
   TableDataType,
 } from '@/utils/type/device.type';
-import LabelBox from '@/components/elements/LabelBox';
+import LabelBox from '@/components/Elements/LabelBox';
 import {
   DEFAULT_DEVICE_STATUS,
   DEFAULT_DEVICE_TYPE,
@@ -23,6 +31,7 @@ import { getNow } from '@/utils/helpers/date';
 import { DATETIME_FORMAT } from '@/utils/constant';
 import serverService from '@/lib/server';
 import { useQuery } from '@tanstack/react-query';
+import { DeviceResponseMsg } from '@/utils/enum/message';
 
 const UPDATE_PERIOD_TIME = 15 * 1000;
 const REFETCH_DELAY_TIME = 1.5 * 1000;
@@ -35,20 +44,22 @@ const convertTableItems = ({
   type,
 }: Device): TableDataType => ({ key: _id, name, serialNumber, status, type });
 
-const DeviceTableContainer = () => {
+const DeviceTableContainer: React.FC = () => {
   const {
     DeviceStore: {
       getDevicesByTypes,
       setDevices: storeSetDevices,
       onlineDevices,
       offlineDevices,
+      setDeviceToEdit,
     },
+    CommonStore: { displayMessage, setIsDeviceModalOpen },
   } = useStores();
 
   const [isAutoRefetch, setIsAutoRefetch] = useState(true);
   const [isManualRefetching, setIsManualRefetching] = useState(false);
 
-  const { data, isLoading, refetch, isRefetching } = useQuery({
+  const { data, isLoading, refetch, isRefetching, isRefetchError } = useQuery({
     queryKey: ['devices'],
     queryFn: serverService.getDevices,
     refetchInterval: !isManualRefetching && isAutoRefetch && UPDATE_PERIOD_TIME,
@@ -60,7 +71,6 @@ const DeviceTableContainer = () => {
   const [selectDeviceType, setSelectDeviceType] =
     useState<DeviceType>(DEFAULT_DEVICE_TYPE);
   const [devices, setDevices] = useState<TableDataType[]>([]);
-  const [activeId, setActiveId] = useState<number | null>(null);
   const [updatedTime, setUpdatedTime] = useState('');
 
   useEffect(() => {
@@ -72,6 +82,14 @@ const DeviceTableContainer = () => {
       isManualRefetching && setIsManualRefetching(false);
     }, REFETCH_DELAY_TIME);
   }, [isManualRefetching]);
+
+  useEffect(() => {
+    isRefetchError &&
+      displayMessage({
+        type: 'error',
+        content: DeviceResponseMsg.FETCH_FAIL,
+      });
+  }, [isRefetchError]);
 
   useEffect(() => {
     const filtedDevices = getDevicesByTypes(selectDeviceType, deviceStatuses);
@@ -131,6 +149,20 @@ const DeviceTableContainer = () => {
     );
   };
 
+  const NewDeviceCreateButton = () => {
+    return (
+      <Button
+        {...{
+          label: 'Add device',
+          icon: faPlus,
+          iconPosition: 'left',
+          className: 'new-device-create-button button-1',
+          onClick: () => setIsDeviceModalOpen(true),
+        }}
+      />
+    );
+  };
+
   const ActionButtons = () => {
     const options = DEFAULT_DEVICE_STATUS.map((value) => ({
       label: deviceStatusLabels[value],
@@ -138,6 +170,7 @@ const DeviceTableContainer = () => {
     }));
     return (
       <div className="action-buttons">
+        <NewDeviceCreateButton />
         <div className="buttons-container">
           <div className="device-status-select-buttons">
             <Checkbox.Group
@@ -206,7 +239,10 @@ const DeviceTableContainer = () => {
         <Button
           {...{
             icon: faEdit,
-            onClick: () => setActiveId(key),
+            onClick: () => {
+              setDeviceToEdit(key);
+              setIsDeviceModalOpen(true, false);
+            },
             className: 'edit-button',
           }}
         />
@@ -221,19 +257,19 @@ const DeviceTableContainer = () => {
     },
     {
       key: `${DeviceTypes.LAPTOP}`,
-      label: 'Latop',
+      label: DeviceTypeLabels[DeviceTypes.LAPTOP],
     },
     {
       key: `${DeviceTypes.PC}`,
-      label: 'Desktop',
+      label: DeviceTypeLabels[DeviceTypes.PC],
     },
     {
       key: `${DeviceTypes.MODEM}`,
-      label: 'Modem',
+      label: DeviceTypeLabels[DeviceTypes.MODEM],
     },
     {
       key: `${DeviceTypes.OTHER}`,
-      label: 'Other devices',
+      label: DeviceTypeLabels[DeviceTypes.OTHER],
     },
   ].map((header) => ({
     ...header,

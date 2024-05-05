@@ -5,15 +5,17 @@ import { useUser } from '@auth0/nextjs-auth0/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Layout } from 'antd';
 import { BaseComponentProps } from '@/utils/type/component.type';
-import Sidebar from '../Sidebar';
-import LayoutHeader from '../LayoutHeader';
-import LayoutFooter from '../LayoutFooter';
 import { useStores } from '@/store/storeProvider';
 import TopProgressBar from '@/components/TopProgressBar';
+import LayoutFooter from '../LayoutFooter';
+import LayoutHeader from '../LayoutHeader';
+import Sidebar from '../Sidebar';
+import DeviceModal from '@/components/Modal/DeviceModal';
 
 import './index.scss';
 
 const { Content } = Layout;
+
 const queryClient = new QueryClient();
 
 const MainLayout = ({ children }: BaseComponentProps) => {
@@ -41,6 +43,7 @@ const MainLayout = ({ children }: BaseComponentProps) => {
           <TopProgressBar />
           <Content className="content-container">{children}</Content>
           <LayoutFooter />
+          <DeviceModal />
         </Layout>
       </Layout>
     </QueryClientProvider>
