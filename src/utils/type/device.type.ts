@@ -26,3 +26,8 @@ export interface TableDataType {
   type: DeviceTypes;
   status: DeviceStatus;
 }
+
+export type FetchDevicesResponse = {
+  devices: Record<string, Device[]>;
+  isSuccess: boolean;
+};

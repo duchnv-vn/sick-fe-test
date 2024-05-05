@@ -19,6 +19,13 @@ import {
   DEFAULT_DEVICE_TYPE,
   deviceStatusLabels,
 } from '../../../utils/constant/device';
+import { getNow } from '@/utils/helpers/date';
+import { DATETIME_FORMAT } from '@/utils/constant';
+import serverService from '@/lib/server';
+import { useQuery } from '@tanstack/react-query';
+
+const UPDATE_PERIOD_TIME = 15 * 1000;
+const REFETCH_DELAY_TIME = 1.5 * 1000;
 
 const convertTableItems = ({
   _id,
@@ -30,10 +37,23 @@ const convertTableItems = ({
 
 const DeviceTableContainer = () => {
   const {
-    DeviceStore: { getDevicesByTypes },
+    DeviceStore: {
+      getDevicesByTypes,
+      setDevices: storeSetDevices,
+      onlineDevices,
+      offlineDevices,
+    },
   } = useStores();
 
-  const [isRefetchData, setIsRefetchData] = useState(false);
+  const [isAutoRefetch, setIsAutoRefetch] = useState(true);
+  const [isManualRefetching, setIsManualRefetching] = useState(false);
+
+  const { data, isLoading, refetch, isRefetching } = useQuery({
+    queryKey: ['devices'],
+    queryFn: serverService.getDevices,
+    refetchInterval: !isManualRefetching && isAutoRefetch && UPDATE_PERIOD_TIME,
+  });
+
   const [deviceStatuses, setDeviceStatuses] = useState<DeviceStatus[]>(
     DEFAULT_DEVICE_STATUS,
   );
@@ -41,27 +61,73 @@ const DeviceTableContainer = () => {
     useState<DeviceType>(DEFAULT_DEVICE_TYPE);
   const [devices, setDevices] = useState<TableDataType[]>([]);
   const [activeId, setActiveId] = useState<number | null>(null);
+  const [updatedTime, setUpdatedTime] = useState('');
 
   useEffect(() => {
-    const filtedDevices = getDevicesByTypes(selectDeviceType, deviceStatuses);
-    setDevices(filtedDevices.map((device) => convertTableItems(device)));
-  }, [deviceStatuses, selectDeviceType]);
+    !isRefetching && setUpdatedTime(getNow(DATETIME_FORMAT.hhmmss));
+  }, [isRefetching]);
 
   useEffect(() => {
     setTimeout(() => {
-      isRefetchData && setIsRefetchData(false);
-    }, 1500);
-  }, [isRefetchData]);
+      isManualRefetching && setIsManualRefetching(false);
+    }, REFETCH_DELAY_TIME);
+  }, [isManualRefetching]);
+
+  useEffect(() => {
+    const filtedDevices = getDevicesByTypes(selectDeviceType, deviceStatuses);
+    setDevices(filtedDevices.map(convertTableItems));
+  }, [deviceStatuses, selectDeviceType]);
+
+  useEffect(() => {
+    if (data) {
+      const { devices, isSuccess } = data;
+      isSuccess && storeSetDevices(devices);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    setDevices(
+      getDevicesByTypes(selectDeviceType, deviceStatuses).map(
+        convertTableItems,
+      ),
+    );
+  }, [onlineDevices, offlineDevices]);
 
   const RefetchDataButton = () => {
     return (
       <Button
         {...{
           icon: faRotateRight,
-          className: `refetch-button ${isRefetchData ? 'rotate-360' : ''}`,
-          onClick: () => setIsRefetchData(true),
+          className: `refetch-button ${isManualRefetching ? 'rotate-360' : ''}`,
+          onClick: () => {
+            refetch();
+            setIsManualRefetching(true);
+          },
         }}
       />
+    );
+  };
+
+  const AutoRefetchCheckBox = () => {
+    return (
+      <div className="auto-refetch-checkbox-container">
+        <Checkbox
+          id="auto-refetch-checkbox"
+          checked={isAutoRefetch}
+          onChange={(value) => setIsAutoRefetch(value.target.checked)}
+        />
+        <label htmlFor="auto-refetch-checkbox">Auto refetch data</label>
+      </div>
+    );
+  };
+
+  const UpdateTime = () => {
+    return (
+      <div className="updated-time-container">
+        <span className="time">
+          <b>Updated at:</b> {updatedTime}
+        </span>
+      </div>
     );
   };
 
@@ -72,28 +138,39 @@ const DeviceTableContainer = () => {
     }));
     return (
       <div className="action-buttons">
-        <div className="device-status-select-buttons">
-          <Checkbox.Group
-            options={options}
-            defaultValue={DEFAULT_DEVICE_STATUS}
-            onChange={(values) => setDeviceStatuses(values)}
-          />
+        <div className="buttons-container">
+          <div className="device-status-select-buttons">
+            <Checkbox.Group
+              options={options}
+              defaultValue={DEFAULT_DEVICE_STATUS}
+              onChange={(values) => setDeviceStatuses(values)}
+            />
+          </div>
+          <AutoRefetchCheckBox />
+          <RefetchDataButton />
         </div>
-        <RefetchDataButton />
+        <UpdateTime />
       </div>
     );
   };
 
   const DeviceTable = () => {
-    return <Table columns={columns} dataSource={devices} />;
+    return (
+      <Table
+        columns={columns}
+        dataSource={devices}
+        loading={isLoading || isManualRefetching}
+      />
+    );
   };
 
   const columns: TableColumnsType<TableDataType> = [
-    { title: 'Device name', dataIndex: 'name', key: 'name' },
+    { title: 'Device name', dataIndex: 'name', key: 'name', width: '30%' },
     {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
+      width: '20%',
       render: (_: any, { status }: TableDataType) => (
         <LabelBox
           {...{
@@ -107,6 +184,7 @@ const DeviceTableContainer = () => {
       title: 'Type',
       dataIndex: 'type',
       key: 'type',
+      width: '20%',
       render: (_: any, { type }: TableDataType) => (
         <LabelBox
           {...{
@@ -120,11 +198,10 @@ const DeviceTableContainer = () => {
       title: 'Serial number',
       dataIndex: 'serialNumber',
       key: 'serialNumber',
+      width: '20%',
     },
     {
-      title: '',
-      dataIndex: '',
-      key: 'x',
+      width: '10%',
       render: (_: any, { key }: TableDataType) => (
         <Button
           {...{

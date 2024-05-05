@@ -4,6 +4,7 @@ import { UserStoreData } from '../type';
 
 class UserStore {
   user: UserProfile = {} as UserProfile;
+  accessToken = '';
 
   constructor() {
     makeAutoObservable(this);

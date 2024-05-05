@@ -8,7 +8,6 @@ class DeviceStore {
   totalOnlineDeviceNumber = 0;
   totalOfflineDeviceNumber = 0;
   deviceNumberByTypes: DeviceNumberByTypes = {} as DeviceNumberByTypes;
-
   onlineDevices: Device[] = [];
   offlineDevices: Device[] = [];
 
@@ -16,7 +15,7 @@ class DeviceStore {
     makeAutoObservable(this);
   }
 
-  setDevices = (devices: Device[], type: DeviceStatus) => {
+  setDevicesByStatus = (devices: Device[], type: DeviceStatus) => {
     switch (type) {
       case 0:
         this.offlineDevices = devices;
@@ -28,6 +27,25 @@ class DeviceStore {
         this.totalOnlineDeviceNumber = devices.length;
         break;
     }
+  };
+
+  setDevices = (devices: Record<string, Device[]>) => {
+    const { online, offline } = devices;
+    let totalDevices = 0;
+
+    if (online) {
+      this.onlineDevices = online;
+      this.totalOnlineDeviceNumber = online.length;
+      totalDevices += online.length;
+    }
+
+    if (offline) {
+      this.offlineDevices = offline;
+      this.totalOfflineDeviceNumber = offline.length;
+      totalDevices += offline.length;
+    }
+
+    this.totalDeviceNumber = totalDevices;
   };
 
   setDeviceNumberByTypes = (devices: Device[]) => {
@@ -61,8 +79,8 @@ class DeviceStore {
   hydrate = ({ devices }: DeviceStoreData) => {
     if (!devices) return;
     const { offline, online } = devices;
-    this.setDevices(offline, DeviceStatus['OFFLINE']);
-    this.setDevices(online, DeviceStatus['ONLINE']);
+    this.setDevicesByStatus(offline, DeviceStatus['offline']);
+    this.setDevicesByStatus(online, DeviceStatus['online']);
     this.setDeviceNumberByTypes([...offline, ...online]);
   };
 }
