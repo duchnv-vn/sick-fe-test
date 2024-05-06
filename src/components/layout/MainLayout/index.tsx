@@ -35,7 +35,7 @@ const MainLayout = ({ children }: BaseComponentProps) => {
     <QueryClientProvider client={queryClient}>
       <ConfigProvider>
         <Layout
-          style={{ minHeight: '100vh' }}
+          style={{ minHeight: '100vh', flexFlow: 'row' }}
           className={`main-layout theme-${themeMode}`}
         >
           <Sidebar />
