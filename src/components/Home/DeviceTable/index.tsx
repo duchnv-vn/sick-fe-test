@@ -62,7 +62,7 @@ const DeviceTableContainer: React.FC = () => {
 
   const [isUnderTaletSize, setIsUnderTabletSize] = useState(false);
 
-  const [isAutoRefetch, setIsAutoRefetch] = useState(false);
+  const [isAutoRefetch, setIsAutoRefetch] = useState(true);
   const [isManualRefetching, setIsManualRefetching] = useState(false);
 
   const { data, isLoading, refetch, isRefetching, isRefetchError } = useQuery({
