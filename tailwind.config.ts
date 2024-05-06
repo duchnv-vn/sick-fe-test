@@ -21,7 +21,7 @@ const config: Config = {
       'phone-lg': '320px',
       'tablet-sm': '480px',
       tablet: '640px',
-      'tablet-lg': '720px',
+      'tablet-lg': '770px',
       laptop: '1024px',
       desktop: '1280px',
     },

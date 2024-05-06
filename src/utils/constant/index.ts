@@ -5,3 +5,6 @@ export const DATETIME_FORMAT = {
 };
 
 export const HCM_TIMEZONE = 'Asia/Ho_Chi_Minh';
+
+export const APP_MENU_DEFAULT_SELECTED_KEY = '1';
+export const APP_MENU_DEFAULT_OPENED_KEY = 'sub-1';
