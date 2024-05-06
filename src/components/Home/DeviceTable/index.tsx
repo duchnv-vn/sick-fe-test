@@ -34,6 +34,7 @@ import serverService from '@/lib/server';
 import { useQuery } from '@tanstack/react-query';
 import { DeviceResponseMsg } from '@/utils/enum/message';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Breakpoints } from '@/utils/hook/screenSize';
 
 const UPDATE_PERIOD_TIME = 15 * 1000;
 const REFETCH_DELAY_TIME = 1.5 * 1000;
@@ -56,8 +57,10 @@ const DeviceTableContainer: React.FC = () => {
       setDeviceToEdit,
       removeDevice,
     },
-    CommonStore: { displayMessage, setIsDeviceModalOpen },
+    CommonStore: { displayMessage, setIsDeviceModalOpen, screenWidth },
   } = useStores();
+
+  const [isUnderTaletSize, setIsUnderTabletSize] = useState(false);
 
   const [isAutoRefetch, setIsAutoRefetch] = useState(true);
   const [isManualRefetching, setIsManualRefetching] = useState(false);
@@ -133,6 +136,11 @@ const DeviceTableContainer: React.FC = () => {
       ),
     );
   }, [onlineDevices, offlineDevices]);
+
+  useEffect(() => {
+    if (!screenWidth) return;
+    screenWidth <= Breakpoints['tablet'] && setIsUnderTabletSize(true);
+  }, [screenWidth]);
 
   const RefetchDataButton = () => {
     return (
@@ -227,14 +235,19 @@ const DeviceTableContainer: React.FC = () => {
       dataIndex: 'status',
       key: 'status',
       width: '20%',
-      render: (_: any, { status }: TableDataType) => (
-        <LabelBox
-          {...{
-            name: DeviceStatus[status],
-            className: `device-status-${status}`,
-          }}
-        />
-      ),
+      render: (_: any, { status }: TableDataType) =>
+        isUnderTaletSize ? (
+          <div
+            className={`device-status device-status-${status} w-3 h-3 rounded-full`}
+          />
+        ) : (
+          <LabelBox
+            {...{
+              name: DeviceStatus[status],
+              className: `device-status-${status}`,
+            }}
+          />
+        ),
     },
     {
       title: 'Type',
@@ -259,7 +272,9 @@ const DeviceTableContainer: React.FC = () => {
     {
       width: '10%',
       render: (_: any, device: TableDataType) => (
-        <div className="device-row-action-buttons">
+        <div
+          className={`device-row-action-buttons ${isUnderTaletSize ? 'flex-col' : ''}`}
+        >
           <Button
             {...{
               icon: faEdit,

@@ -11,6 +11,7 @@ class CommonStore {
   isAppLoading = false;
   isDeviceModalOpen = false;
   isCreateModal = true;
+  screenWidth = 0;
 
   constructor() {
     makeAutoObservable(this);
@@ -35,6 +36,10 @@ class CommonStore {
   setIsDeviceModalOpen = (status: boolean, isCreate: boolean = true) => {
     this.isDeviceModalOpen = status;
     this.isCreateModal = isCreate;
+  };
+
+  setScreenWidth = (number: number) => {
+    this.screenWidth = number;
   };
 
   hydrate = ({ mode, messageApiInstance }: CommonStoreData) => {
