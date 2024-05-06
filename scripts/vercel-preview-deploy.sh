@@ -4,7 +4,7 @@ if [ -e .env.dev ]; then
     source .env.dev
 fi
 
-mkdir .vercel
+mkdir -p .vercel
 touch .vercel/project.json
 echo "{\"orgId\":\"$VERCEL_ORG_ID\",\"projectId\":\"$VERCEL_PROJECT_ID\"}" >.vercel/project.json
 
