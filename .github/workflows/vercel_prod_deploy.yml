@@ -4,6 +4,8 @@ env:
   APP_ENV: production
   MONGODB_URI: ${{ secrets.MONGODB_URI }}
   VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
   AUTH0_DOMAIN: ${{ secrets.AUTH0_DOMAIN }}
   AUTH0_ISSUER_BASE_URL: ${{ secrets.AUTH0_ISSUER_BASE_URL }}
   AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}

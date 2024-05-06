@@ -6,7 +6,7 @@ fi
 
 mkdir .vercel
 touch .vercel/project.json
-echo "{\"orgId\":\"$VERCEL_ORG_ID\",\"projectId\":\"$VERCEL_PROJECT_ID\"}" >./.vercel/project.json
+echo "{\"orgId\":\"$VERCEL_ORG_ID\",\"projectId\":\"$VERCEL_PROJECT_ID\"}" >.vercel/project.json
 
 vercel . --prod \
     -e MONGODB_URI=$MONGODB_URI \
