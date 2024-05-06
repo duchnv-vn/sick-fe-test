@@ -18,7 +18,10 @@ const config: Config = {
     },
     screens: {
       phone: '280px',
+      'phone-lg': '320px',
+      'tablet-sm': '480px',
       tablet: '640px',
+      'tablet-lg': '720px',
       laptop: '1024px',
       desktop: '1280px',
     },

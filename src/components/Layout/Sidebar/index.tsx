@@ -10,6 +10,7 @@ import Image from '@/components/Elements/Image';
 import whiteLogo from '../../../assets/image/white_logo.svg';
 import { useStores } from '@/store/storeProvider';
 import { ThemeModes } from '@/utils/enum/theme';
+import { Breakpoints } from '@/utils/hook/screenSize';
 
 const { Sider } = Layout;
 
@@ -44,13 +45,20 @@ const DEFAULT_OPENED_KEY = 'sub-1';
 
 const Sidebar: React.FC = () => {
   const {
-    CommonStore: { isCollapseSidebar, setIsCollapseSidebar, themeMode },
+    CommonStore: {
+      isCollapseSidebar,
+      setIsCollapseSidebar,
+      themeMode,
+      screenWidth,
+    },
   } = useStores();
+
+  const denyExpandSidebar = screenWidth <= Breakpoints['tablet-lg'];
 
   return (
     <Sider
-      collapsible
-      collapsed={isCollapseSidebar}
+      collapsible={!denyExpandSidebar}
+      collapsed={denyExpandSidebar || isCollapseSidebar}
       onCollapse={(value) => setIsCollapseSidebar(value)}
       className="silder"
     >

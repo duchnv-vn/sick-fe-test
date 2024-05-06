@@ -88,5 +88,15 @@
         @apply w-5 h-5;
       }
     }
+
+    .ant-table-cell {
+      .device-status {
+        @apply mx-auto;
+      }
+    }
   }
+}
+
+.ant-tabs-extra-content {
+  flex: auto !important;
 }
