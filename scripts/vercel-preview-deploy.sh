@@ -4,6 +4,10 @@ if [ -e .env.dev ]; then
     source .env.dev
 fi
 
+mkdir .vercel
+touch .vercel/project.json
+echo "{\"orgId\":\"$VERCEL_ORG_ID\",\"projectId\":\"$VERCEL_PROJECT_ID\"}" >./.vercel/project.json
+
 vercel . \
     -e MONGODB_URI=$MONGODB_URI \
     -e AUTH0_DOMAIN=$AUTH0_DOMAIN \
