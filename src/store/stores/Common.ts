@@ -8,10 +8,12 @@ class CommonStore {
   themeMode: ThemeModes | string = '';
   isOpenTicketModal = false;
   isCollapseSidebar = false;
+  isOpenPhoneDrawer = false;
   isAppLoading = false;
   isDeviceModalOpen = false;
   isCreateModal = true;
   screenWidth = 0;
+  isDisplaySidebar = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -40,6 +42,14 @@ class CommonStore {
 
   setScreenWidth = (number: number) => {
     this.screenWidth = number;
+  };
+
+  setIsOpenPhoneDrawer = (status: boolean) => {
+    this.isOpenPhoneDrawer = status;
+  };
+
+  setIsDisplaySidebar = (status: boolean) => {
+    this.isDisplaySidebar = status;
   };
 
   hydrate = ({ mode, messageApiInstance }: CommonStoreData) => {

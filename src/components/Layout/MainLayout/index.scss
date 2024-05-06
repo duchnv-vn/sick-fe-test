@@ -14,7 +14,14 @@
 
     .left-section {
       @apply w-1/2 flex items-center;
+
+      .header-sidebar-button {
+        .icon {
+          @apply w-5 h-5 text-secondary;
+        }
+      }
     }
+
     .right-section {
       @apply w-1/2 flex items-center justify-end;
 

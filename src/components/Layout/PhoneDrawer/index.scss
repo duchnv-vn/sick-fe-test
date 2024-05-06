@@ -1,0 +1,13 @@
+.ant-drawer-content-wrapper {
+  width: 40% !important;
+}
+
+.ant-drawer-body {
+  padding: 0 !important;
+}
+
+.ant-drawer-header {
+  .ant-drawer-title {
+    @apply flex items-center justify-center;
+  }
+}

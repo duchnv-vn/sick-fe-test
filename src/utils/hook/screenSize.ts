@@ -10,7 +10,7 @@ export const Breakpoints = {
   'phone-lg': 320,
   'tablet-sm': 480,
   tablet: 640,
-  'tablet-lg': 720,
+  'tablet-lg': 770,
   laptop: 1024,
   desktop: 1280,
 };
