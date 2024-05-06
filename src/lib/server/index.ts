@@ -22,7 +22,7 @@ class Singleton {
 
   private constructor() {
     this.client = new HttpService({
-      baseURL: `${process.env.APP_DOMAIN}/api`,
+      baseURL: `${process.env.APP_DOMAIN || ''}/api`,
       timeout: MAX_TIMEOUT,
     });
   }
