@@ -10,7 +10,8 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,md,mdx,css,scss}\"",
     "commit": "git-cz",
     "deploy:preview": "bash scripts/vercel-preview-deploy.sh",
-    "deploy:prod": "bash scripts/vercel-prod-deploy.sh"
+    "deploy:prod": "bash scripts/vercel-prod-deploy.sh",
+    "test:e2e": "bash scripts/run-test-e2e.sh"
   },
   "dependencies": {
     "@ant-design/nextjs-registry": "^1.0.0",
@@ -37,6 +38,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "dotenv": "^16.4.5",
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
     "git-cz": "^4.9.0",
