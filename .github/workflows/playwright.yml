@@ -9,8 +9,9 @@ on:
       - "master"
 jobs:
   test:
-    environment:
-      name: test
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    environment: test
     env:
       MONGODB_URI: ${{ secrets.MONGODB_URI }}
       PORT: ${{ secrets.PORT }}
@@ -24,8 +25,6 @@ jobs:
       AUTH0_SECRET: ${{ secrets.AUTH0_SECRET }}
       AUTH0_BASE_URL: ${{ secrets.AUTH0_BASE_URL }}
       APP_DOMAIN: ${{ secrets.APP_DOMAIN }}
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
