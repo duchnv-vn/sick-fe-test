@@ -15,6 +15,7 @@ jobs:
     env:
       MONGODB_URI: ${{ secrets.MONGODB_URI }}
       PORT: ${{ secrets.PORT }}
+      APP_DOMAIN: ${{ secrets.APP_DOMAIN }}
       CI_TEST_USER_EMAIL: ${{ secrets.CI_TEST_USER_EMAIL }}
       CI_TEST_USER_PASSWORD: ${{ secrets.CI_TEST_USER_PASSWORD }}
       AUTH0_DOMAIN: ${{ secrets.AUTH0_DOMAIN }}
@@ -24,7 +25,7 @@ jobs:
       AUTH0_AUDIENCE: ${{ secrets.AUTH0_AUDIENCE }}
       AUTH0_SECRET: ${{ secrets.AUTH0_SECRET }}
       AUTH0_BASE_URL: ${{ secrets.AUTH0_BASE_URL }}
-      APP_DOMAIN: ${{ secrets.APP_DOMAIN }}
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

@@ -6,7 +6,8 @@ import { defineConfig, devices } from '@playwright/test';
  */
 require('dotenv').config({ path: '.env.test' });
 
-const basURL = `http://127.0.0.1:${process.env.PORT || 3000}`;
+const basURL =
+  process.env.APP_DOMAIN || `http://localhost:${process.env.PORT || 3000}`;
 
 /**
  * See https://playwright.dev/docs/test-configuration.

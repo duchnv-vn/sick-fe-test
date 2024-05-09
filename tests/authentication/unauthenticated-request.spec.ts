@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-const appDomain = `http://127.0.0.1:${process.env.PORT || 3000}`;
+const appDomain =
+  process.env.APP_DOMAIN || `http://localhost:${process.env.PORT || 3000}`;
 const auth0Domain = process.env.AUTH0_ISSUER_BASE_URL || '';
 const userCredential = {
   email: process.env.CI_TEST_USER_EMAIL || '',
@@ -32,6 +33,4 @@ test('should access Auth0 universal login page', async ({ page }) => {
 
 test('should login succeed and redirect to device dasboard page', async ({
   page,
-}) => {
-  // Should create Auth0 testing only database & Store test user record
-});
+}) => {});
