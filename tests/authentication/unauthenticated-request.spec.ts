@@ -1,7 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const appDomain =
-  process.env.APP_DOMAIN || `http://localhost:${process.env.PORT || 3000}`;
+const appDomain = process.env.APP_DOMAIN || '';
 const auth0Domain = process.env.AUTH0_ISSUER_BASE_URL || '';
 const userCredential = {
   email: process.env.CI_TEST_USER_EMAIL || '',
